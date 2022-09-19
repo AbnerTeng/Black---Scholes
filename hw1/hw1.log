@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.6.3)  16 SEP 2022 21:21
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.6.3)  19 SEP 2022 13:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/abnerteng/Desktop/hw1
-(/Users/abnerteng/Desktop/hw1.tex
+**/Users/abnerteng/GitHub/Financial-Engineering/hw1/hw1
+(/Users/abnerteng/GitHub/Financial-Engineering/hw1/hw1.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-02-24> (/usr/local/texlive/2022/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -711,36 +711,41 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 90.
 
 
-Overfull \hbox (29.79657pt too wide) detected at line 101
+Overfull \hbox (29.79657pt too wide) detected at line 107
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--104
+Underfull \hbox (badness 10000) in paragraph at lines 107--110
 
  []
 
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 150--152
+[2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 191--194
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 150--152
+Underfull \hbox (badness 10000) in paragraph at lines 191--194
 
  []
 
-[3] (./hw1.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--194
+
+ []
+
+[4] (./hw1.aux)
 Package rerunfilecheck Info: File `hw1.out' has not changed.
 (rerunfilecheck)             Checksum: D802470C91C0723084D3D97F2B19A259;1099.
  ) 
 Here is how much of TeX's memory you used:
- 31536 strings out of 476179
- 743175 string characters out of 5809545
+ 31553 strings out of 476179
+ 743587 string characters out of 5809545
  1142612 words of memory out of 5000000
- 51773 multiletter control sequences out of 15000+600000
- 476250 words of font info for 59 fonts, out of 8000000 for 9000
+ 51782 multiletter control sequences out of 15000+600000
+ 477565 words of font info for 68 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 110i,12n,106p,740b,479s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 110i,12n,106p,765b,479s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on hw1.pdf (3 pages).
+Output written on hw1.pdf (4 pages).

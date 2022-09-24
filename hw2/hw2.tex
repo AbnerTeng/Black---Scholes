@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,scrextend}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14.5pt}
+\addtolength{\topmargin}{-2.5pt}
+\pagestyle{fancy}
+
+\newcommand{\cont}{\subseteq}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage[mathscr]{euscript}
+\let\euscr\mathscr\let\mathscr\relax% just so we can load this and rsfs
+\usepackage[scr]{rsfso}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue,
+citecolor=blue, urlcolor=blue]{hyperref}
+
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\newcommand{\ddx}{\frac{d}{dx}}
+\newcommand{\dfdx}{\frac{df}{dx}}
+\newcommand{\ddxp}[1]{\frac{d}{dx}\left(#1 \right)}
+\newcommand{\dydx}{\frac{dy}{dx}}
+\let\ds\displaystyle
+\newcommand{\intx}[1]{\int#1 \, dx}
+\newcommand{\intt}[1]{\int#1 \, dt}
+\newcommand{\defint}[3]{\int_{#1}^{#2} #3 \, dx}
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\un}{\cup}
+\newcommand{\inter}{\cap}
+\newcommand{\ps}{\mathscr{P}}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newtheorem*{sol}{Solution}
+\newtheorem*{claim}{Claim}
+\newtheorem{problem}{Problem}
+\pgfplotsset{compat=1.17}
+\begin{document}
+ 
+% Don't change the above session
+
+\lhead{Financial Engineering hw2}
+\chead{111352027}
+\rhead{\today}
+ 
+% \maketitle
+\section{Proof properties of Wiener process}
+Assume that $t<s$\\
+\[
+    X_s\sim N(0, s)\quad\ X_t\sim N(0, t)  
+\]
+\begin{enumerate}
+    \item By independent increments, we know that $E(X_s|X_t=B) = E(X_s-X_t+X_t|X_t=B) = E(X_s-X_t|X_t=B)+X_t=0+B=B$
+    \item $Var(X_s|X_t=B) = E\{[X_s-E(X_s|X_t=B)]^2|X_t=B\} = E[(X_s-B)^2|X_t=B]\\ = E[X_s^2-2X_s B+B^2|X_t=B]=E[X_s^2|X_t=B]-2BE(X_s|X_t=B)+B^2\\=E[X_s^2|X_t=B]-B^2=Var(X_s)-Var(X_t)=s-t$
+    \item $X_t|X_s=B$ is a bivariate normal distribution which $\sim N(B\times\frac{t}{s}, (s-t)\times\frac{t}{s})$. So $E(X_t|X_s=B) = B\times\frac{t}{s}$
+    \item According to 3. $Var(X_t|X_s=B) = (s-t)\times\frac{t}{s}$
+    \item $Cov(X_s, X_t) = E(X_s X_t) - E(X_s)E(X_t) = E(X_s X_t)-0 = E(X_s X_t)\\ = E(X_s-X_{s-1}+X_{s-1}-X_{s-2}+\cdots+X_{t+1}-X_{t}+X_t)X_t  \\ = E(X_S-X_{s-1})X_t + \cdots +E(X_t)X_t = E(X_t^2) = t^2$
+\end{enumerate}
+
+
+\section{Proof the Quadratic Variation of Brownian Motion}
+Proof.
+
+
+\newpage
+\section{Application of It\^o's Lemma (I)}
+Assume the stock price change process is
+\[
+    dS_t = \mu S_t dt + \sigma S_t dz_t  
+\]
+\[
+    f_t = \ln S_t
+\]  
+According to Taylor series
+\begin{align*}
+    df = (\frac{\partial f}{\partial t}dt+\frac{\partial f}{\partial S}\mu S_t(S_t, t)+\frac{1}{2}\frac{\partial^2f}{\partial S^2}\sigma^2 S_t^2(S_t, t))dt + \frac{\partial f}{\partial S}\sigma S_t(S_t, t)dz_t
+\end{align*}
+Because $f_t = \ln S_t$
+\begin{align*}
+    d\ln S_t &= (\frac{1}{S_t}\mu S_t + \frac{-1}{2S_t^2}\sigma^2S_t^2)dt + \frac{1}{S_t}\sigma S_t dz_t\\
+    &= (\mu - \frac{1}{2}\sigma^2)dt + \sigma dz_t
+\end{align*}
+Then we inergrate it to get the close form of stock price.
+\begin{align*}
+   \int_0^T d\ln S_t = \int_0^T (\mu - \frac{1}{2}\sigma^2)dt + \int_0^T \sigma dz_t\\
+   \ln(S_T-S_0) = (\mu-\frac{1}{2}\sigma^2)T + \sigma z_T\\
+   (S_T-S_0) = \exp{[(\mu-\frac{1}{2}\sigma^2)T + \sigma z_T]}\\
+   S_T = S_0 + \exp{[(\mu-\frac{1}{2}\sigma^2)T + \sigma z_T]} 
+\end{align*}
+Expectation value and variance
+\newpage
+
+\section{Application of It\^o's Lemma (II)}
+Assume the stock price change process is
+\[
+    dS_t = \mu S_t dt + \sigma S_t dz_t  
+\]
+\[
+    f_t = S_t - Ke^{-r(T-t)}
+\]  
+According to Taylor series
+\begin{align*}
+    df &= (-rK^{-r(T-t)} + \mu S_t + \frac{(\sigma S_t)^2}{2}\times 0)dt + \sigma S_t dz_t\\
+    &= (\mu S_t - rK^{-r(T-t)})dt + \sigma S_t dz_t
+\end{align*}
+
+\section{Application of It\^o's Lemma (III)}
+Assume the stock price change process is
+\[
+    dr_t = \kappa   
+\]
+\[
+    f_t = \ln S_t
+\]  
+ 
+\end{document}

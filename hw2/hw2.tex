@@ -64,7 +64,28 @@ Assume that $t<s$\\
 
 
 \section{Proof the Quadratic Variation of Brownian Motion}
-Proof.
+According to standard Brownian Motion
+\[
+    dX_t = adt + bdW_t  
+\]
+By definition, $(dZ)^2 = \varepsilon^2 dt,\ \forall \varepsilon\sim N(0, 1)$. So
+\[
+    Var(\varepsilon) = 1 = E[\varepsilon^2] \Rightarrow E[(dZ)^2] = E[\varepsilon^2 dt] = 1dt = dt  
+\]
+In addition, $Var((dZ^2)) = Var(\varepsilon^2 dt) = (dt^2)Var(\varepsilon) \to 0$ (because $(dt^2\to 0)$). So we say
+\[
+    (dZ)^2 \stackrel{a.s.}{=} dt
+\]  
+Based on the result of $(dZ)^2 = dt$, we can infer that the quadratic variation of Brownian Motion over $[0, T]$, i.e., $[W,W](t) = \lim_{n\to\infty}\sum_{i=1}^n|B(t_i^n)-B(t_{i-1}^n)|^2=T$.\\\\
+<Proof>\\
+At first we know $(dZ)^2\sim N(dt, 0)$ when $n\to\infty$ or $dt\to 0$, $(B(t_i^n)-B(t_{i-1}^n))\stackrel{a.s.}{=}(t_i^n-t_{i-1}^n)$.\\
+This is because $E[(B(t_i^n)-B(t_{i-1}^n))^2] = E[\varepsilon^2(t_i^n-t_{i-1}^n)] = t_i^n - t_{i-1}^n$, and\\
+$Var((B(t_i^n)-B(t_{i-1}^n))^2) = Var(\varepsilon^2(t_i^n-t_{i-1}^n)) = (t_i^n - t_{i-1}^n)^2Var(\varepsilon^2)\to 0$.\\\\
+Thus, we can conclude that when $n\to \infty$, or $t_i^n-t_{i-1}^n \to 0$, $\lim_{n\to\infty}\sum_{i=1}^n|B(t_i^n)-B(t_{i-1}^n)|^2=T$
+
+
+
+
 
 
 \newpage
@@ -78,7 +99,7 @@ Assume the stock price change process is
 \]  
 According to Taylor series
 \begin{align*}
-    df = (\frac{\partial f}{\partial t}dt+\frac{\partial f}{\partial S}\mu S_t(S_t, t)+\frac{1}{2}\frac{\partial^2f}{\partial S^2}\sigma^2 S_t^2(S_t, t))dt + \frac{\partial f}{\partial S}\sigma S_t(S_t, t)dz_t
+    df_t = (\frac{\partial f}{\partial t}dt+\frac{\partial f}{\partial S}\mu S_t(S_t, t)+\frac{1}{2}\frac{\partial^2f}{\partial S^2}\sigma^2 S_t^2(S_t, t))dt + \frac{\partial f}{\partial S}\sigma S_t(S_t, t)dz_t
 \end{align*}
 Because $f_t = \ln S_t$
 \begin{align*}
@@ -105,17 +126,59 @@ Assume the stock price change process is
 \]  
 According to Taylor series
 \begin{align*}
-    df &= (-rK^{-r(T-t)} + \mu S_t + \frac{(\sigma S_t)^2}{2}\times 0)dt + \sigma S_t dz_t\\
+    df_t &= (-rK^{-r(T-t)} + \mu S_t + \frac{(\sigma S_t)^2}{2}\times 0)dt + \sigma S_t dz_t\\
     &= (\mu S_t - rK^{-r(T-t)})dt + \sigma S_t dz_t
 \end{align*}
 
 \section{Application of It\^o's Lemma (III)}
-Assume the stock price change process is
+Assume the interest rate change process is
 \[
-    dr_t = \kappa   
+    dr_t = \kappa(\theta - r_t)dt + \sigma dz_t
 \]
 \[
-    f_t = \ln S_t
+    f_t = r_t e^{\kappa t}
 \]  
- 
+According to Taylor series
+\begin{align*}
+    df_t &= (\frac{\partial f}{\partial t} + \frac{\partial f}{\partial r}\kappa(\theta-r_t) + \frac{1}{2}\frac{\partial^2f}{\partial r^2}\sigma^2(r_t, t))dt + \frac{\partial f}{\partial r}\sigma(r_t, t)dz_t\\
+    &= (\kappa r_t e^{\kappa t} + e^{\kappa t}\kappa (\sigma-r_t))dt + e^{\kappa t}\sigma dz_t
+\end{align*}
+Because $f_t = r_t e^{\kappa t}$
+\begin{align*}
+    dr_t e^{\kappa t} &= (\kappa r_t e^{\kappa t} + e^{\kappa t}\kappa (\sigma-r_t))dt + e^{\kappa t}\sigma dz_t\\
+    dr_t &= (\kappa r_t + \kappa (\sigma-r_t))dt + \sigma dz_t\\
+    &= \kappa\sigma dt + \sigma dz_t
+\end{align*}
+Then we inergrate it to get the close form of interest rate.
+\begin{align*}
+    \int_0^T dr_t &= \int_0^T \kappa\sigma dt + \int_0^T \sigma dz_t\\
+    r_T -r_0 &= \int_0^T \kappa\sigma dt + \int_0^T \sigma dz_t\\
+    r_T &= r_0 + \kappa\sigma T + \sigma z_T
+\end{align*}
+Exepcted Value and Variance
+\newpage
+\section{Application of It\^o's Lemma (IV)}
+Assume the stock price change process and foriegn exchange rate change process are
+\begin{align*}
+    dS_t = \mu S_t dt + \sigma S_t dz_{St}\\
+    dX_t = \mu X_t dt + \sigma X_t dz_{Xt}\\
+    Cov(dz_{St}, dz_{Xt}) = \rho dt
+\end{align*}
+if $f_t = f(t, X_t, S_t) = S_t X_t$, According to Taylor series
+\begin{align*}
+    df_t &= (\frac{\partial f_t}{\partial t} + \frac{\partial f_t}{\partial S_t}\mu_S S_t + \frac{\partial f_t}{\partial X_t}\mu_X X_t + \frac{1}{2}\frac{\partial^2 f_t}{\partial S_t^2}\sigma^2_S S_t^2 + \frac{1}{2}\frac{\partial^2 f_t}{\partial X_t^2}\sigma^2_X X_t^2 + \frac{\partial^2 f_t}{\partial S_t \partial X_t}\sigma_S S_t \sigma_X X_t \rho)dt \\
+    &+ \frac{\partial f_t}{\partial S_t}\sigma_S S_t dz_{St} + \frac{\partial f_t}{\partial X_t}\sigma_X X_t dz_{Xt}\\
+    &= (X_t\mu_S S_t + S_t \mu_X X_t + \sigma_S\sigma_X S_t X_t\rho)dt + X_t \sigma_S S_t dz_{St} + S_t \sigma_X X_t dz_{Xt}\\
+\end{align*}
+Because $f_t = S_t X_t$
+\begin{align*}
+    dS_t X_t = (X_t\mu_S S_t + S_t \mu_X X_t + \sigma_S\sigma_X S_t X_t\rho)dt + X_t \sigma_S S_t dz_{St} + S_t \sigma_X X_t dz_{Xt} 
+\end{align*}
+Then we inergrate it to get the close form of stock price with NTD dollars.
+\begin{align*}
+    \int_o^T dS_t X_t &= \int_0^T (X_t\mu_S S_t + S_t \mu_X X_t + \sigma_S\sigma_X S_t X_t\rho)dt + \int_o^T X_t \sigma_S S_t dz_{St} + \int_o^T S_t \sigma_X X_t dz_{Xt}\\
+    (S_T-S_0)(X_T-X_0) &= \int_0^T(S_t X_t(\mu_S + \mu_X+\sigma_S\sigma_X\rho))dt + \int_0^T S_t X_t(\sigma_S dz_{St} + \sigma_X dz_{Xt})\\
+    &= [(S_T X_T - S_0 X_0)(\mu_S + \mu_X+\sigma_S\sigma_X\rho)]T + (S_T X_T - S_0 X_0)(\sigma_S dz_{ST} + \sigma_X dz_{XT})
+\end{align*}
+
 \end{document}

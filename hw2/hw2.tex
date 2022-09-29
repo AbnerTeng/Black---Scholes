@@ -108,12 +108,18 @@ Because $f_t = \ln S_t$
 \end{align*}
 Then we inergrate it to get the close form of stock price.
 \begin{align*}
-   \int_0^T d\ln S_t = \int_0^T (\mu - \frac{1}{2}\sigma^2)dt + \int_0^T \sigma dz_t\\
-   \ln(S_T-S_0) = (\mu-\frac{1}{2}\sigma^2)T + \sigma z_T\\
-   (S_T-S_0) = \exp{[(\mu-\frac{1}{2}\sigma^2)T + \sigma z_T]}\\
-   S_T = S_0 + \exp{[(\mu-\frac{1}{2}\sigma^2)T + \sigma z_T]} 
+   \int_0^T d\ln S_t &= \int_0^T (\mu - \frac{1}{2}\sigma^2)dt + \int_0^T \sigma dz_t\\
+   \ln(S_T)-\ln(S_0) &= \ln(\dfrac{S_T}{S_0}) = (\mu-\frac{1}{2}\sigma^2)T + \sigma z_T\\
+   \dfrac{S_T}{S_0} &= \exp{[(\mu-\frac{1}{2}\sigma^2)T + \sigma z_T]}\\
+   S_T &= S_0\exp{[(\mu-\frac{1}{2}\sigma^2)T + \sigma z_T]} 
 \end{align*}
-Expectation value and variance
+If $S_T$ is Logarithm Normal Distributed, then $\ln(S_T)$ is Normal Distributed.\\ 
+\begin{align*}
+    \ln(S_T) &= \ln(S_0) + (\mu-\frac{1}{2}\sigma^2)T + \sigma z_T\sim N(\ln(S_0) + (\mu-\frac{1}{2}\sigma^2)T, \sigma^2 T)\\
+    E(S_T) &= \exp[\ln(S_0) + (\mu-\frac{1}{2}\sigma^2)T + \frac{1}{2}\sigma^2 T] = S_0e^{\mu T}\\
+    E(S_T^2) &= \exp[2\ln(S_0) + 2(\mu-\frac{1}{2}\sigma^2)T + 2\frac{1}{2}\sigma^2 T] = S_0^2e^{2\mu T + \sigma^2 T}\\
+    Var(S_T) &= E(S_T^2) - [E(S_T)]^2 = S_0^2(e^{2\mu T + \sigma^2 T} - e^{2\mu T})
+\end{align*}
 \newpage
 
 \section{Application of It\^o's Lemma (II)}
@@ -155,7 +161,13 @@ Then we inergrate it to get the close form of interest rate.
     r_T -r_0 &= \int_0^T \kappa\sigma dt + \int_0^T \sigma dz_t\\
     r_T &= r_0 + \kappa\sigma T + \sigma z_T
 \end{align*}
-Exepcted Value and Variance
+If $r_T$ is Normal Distributed,
+\begin{align*}
+    r_T &= r_0 + \kappa\sigma T + \sigma z_T\sim N(r_0 + \kappa\sigma T, \sigma^2 T)\\
+    E(r_T) &= r_0 + \kappa\sigma T\\
+    E(r_T^2) &= r_0^2 + 2r_0\kappa\sigma T + \kappa^2\sigma^2 T\\
+    Var(r_T) &= E(r_T^2) - [E(r_T)]^2 = r_0^2 + 2r_0\kappa\sigma T + \kappa^2\sigma^2 T - (r_0 + \kappa\sigma T)^2 = 0
+\end{align*}
 \newpage
 \section{Application of It\^o's Lemma (IV)}
 Assume the stock price change process and foriegn exchange rate change process are
@@ -164,6 +176,7 @@ Assume the stock price change process and foriegn exchange rate change process a
     dX_t = \mu X_t dt + \sigma X_t dz_{Xt}\\
     Cov(dz_{St}, dz_{Xt}) = \rho dt
 \end{align*}
+\subsection{$f_t = S_t X_t$}
 if $f_t = f(t, X_t, S_t) = S_t X_t$, According to Taylor series
 \begin{align*}
     df_t &= (\frac{\partial f_t}{\partial t} + \frac{\partial f_t}{\partial S_t}\mu_S S_t + \frac{\partial f_t}{\partial X_t}\mu_X X_t + \frac{1}{2}\frac{\partial^2 f_t}{\partial S_t^2}\sigma^2_S S_t^2 + \frac{1}{2}\frac{\partial^2 f_t}{\partial X_t^2}\sigma^2_X X_t^2 + \frac{\partial^2 f_t}{\partial S_t \partial X_t}\sigma_S S_t \sigma_X X_t \rho)dt \\
@@ -174,11 +187,29 @@ Because $f_t = S_t X_t$
 \begin{align*}
     dS_t X_t = (X_t\mu_S S_t + S_t \mu_X X_t + \sigma_S\sigma_X S_t X_t\rho)dt + X_t \sigma_S S_t dz_{St} + S_t \sigma_X X_t dz_{Xt} 
 \end{align*}
-Then we inergrate it to get the close form of stock price with NTD dollars.
+Then we intergrate it to get the close form of stock price with NTD dollars.
 \begin{align*}
     \int_o^T dS_t X_t &= \int_0^T (X_t\mu_S S_t + S_t \mu_X X_t + \sigma_S\sigma_X S_t X_t\rho)dt + \int_o^T X_t \sigma_S S_t dz_{St} + \int_o^T S_t \sigma_X X_t dz_{Xt}\\
-    (S_T-S_0)(X_T-X_0) &= \int_0^T(S_t X_t(\mu_S + \mu_X+\sigma_S\sigma_X\rho))dt + \int_0^T S_t X_t(\sigma_S dz_{St} + \sigma_X dz_{Xt})\\
-    &= [(S_T X_T - S_0 X_0)(\mu_S + \mu_X+\sigma_S\sigma_X\rho)]T + (S_T X_T - S_0 X_0)(\sigma_S dz_{ST} + \sigma_X dz_{XT})
+    S_T X_T-S_0 X_0 &= \int_0^T(S_t X_t(\mu_S + \mu_X+\sigma_S\sigma_X\rho))dt + \int_0^T S_t X_t(\sigma_S dz_{St} + \sigma_X dz_{Xt})\\
+    &= [(S_T X_T - S_0 X_0)(\mu_S + \mu_X+\sigma_S\sigma_X\rho)]T + S_T X_T(\sigma_S dz_{ST} + \sigma_X dz_{XT})\\\\
+    S_T X_T &= S_0 X_0 + [(S_T X_T - S_0 X_0)(\mu_S + \mu_X+\sigma_S\sigma_X\rho)]T + S_T X_T(\sigma_S dz_{ST} + \sigma_X dz_{XT})
 \end{align*}
-
+\subsection{$f_t = \dfrac{S_t}{X_t}$}
+if $f_t = f(t, X_t, S_t) = \dfrac{S_t}{X_t}$, According to Taylor series
+\begin{align*}
+    df_t &= (\frac{\partial f_t}{\partial t} + \frac{\partial f_t}{\partial S_t}\mu_S S_t + \frac{\partial f_t}{\partial X_t}\mu_X X_t + \frac{1}{2}\frac{\partial^2 f_t}{\partial S_t^2}\sigma^2_S S_t^2 + \frac{1}{2}\frac{\partial^2 f_t}{\partial X_t^2}\sigma^2_X X_t^2 + \frac{\partial^2 f_t}{\partial S_t \partial X_t}\sigma_S S_t \sigma_X X_t \rho)dt \\
+    &+ \frac{\partial f_t}{\partial S_t}\sigma_S S_t dz_{St} + \frac{\partial f_t}{\partial X_t}\sigma_X X_t dz_{Xt}\\
+    &= (\dfrac{1}{X_t}\mu_S S_t - \dfrac{S_t}{X_t} \mu_X + 2\dfrac{S_t}{X_t}\sigma^2_X -\dfrac{1}{X_t}\sigma_S S_t \sigma_X\rho)dt + \dfrac{1}{X_t} \sigma_S S_t dz_{St} -\dfrac{S_t}{X_t} \sigma_X dz_{Xt}\\
+\end{align*}
+Because $f_t = \dfrac{S_t}{X_t}$
+\begin{align*}
+    d\dfrac{S_t}{X_t} = (\dfrac{1}{X_t}\mu_S S_t - \dfrac{S_t}{X_t} \mu_X + 2\dfrac{S_t}{X_t}\sigma^2_X -\dfrac{1}{X_t}\sigma_S S_t \sigma_X\rho)dt + \dfrac{1}{X_t} \sigma_S S_t dz_{St} -\dfrac{S_t}{X_t} \sigma_X dz_{Xt}
+\end{align*}
+Then we intregrate it to get the close form of stock price with NTD dollars.
+\begin{align*}
+    \int_o^T d\dfrac{S_t}{X_t} &= \int_0^T (\dfrac{1}{X_t}\mu_S S_t - \dfrac{S_t}{X_t} \mu_X + 2\dfrac{S_t}{X_t}\sigma^2_X -\dfrac{1}{X_t}\sigma_S S_t \sigma_X\rho)dt + \int_o^T \dfrac{1}{X_t} \sigma_S S_t dz_{St} -\int_o^T \dfrac{S_t}{X_t} \sigma_X dz_{Xt}\\
+    \dfrac{S_T}{X_T}-\dfrac{S_0}{X_0} &= \int_0^T(\dfrac{1}{X_t}\mu_S S_t - \dfrac{S_t}{X_t} \mu_X + 2\dfrac{S_t}{X_t}\sigma^2_X -\dfrac{1}{X_t}\sigma_S S_t \sigma_X\rho)dt + \int_0^T \dfrac{1}{X_t} \sigma_S S_t dz_{St} -\int_0^T \dfrac{S_t}{X_t} \sigma_X dz_{Xt}\\
+    &= [(\dfrac{S_T}{X_T}-\dfrac{S_0}{X_0})(\mu_S - \mu_X + 2\sigma^2_X -\sigma_S\sigma_X\rho)]T + \dfrac{S_T}{X_T}(\sigma_S dz_{ST} - \sigma_X dz_{XT})\\\\
+    \dfrac{S_T}{X_T} &= \dfrac{S_0}{X_0} + [(\dfrac{S_T}{X_T}-\dfrac{S_0}{X_0})(\mu_S - \mu_X + 2\sigma^2_X -\sigma_S\sigma_X\rho)]T + \dfrac{S_T}{X_T}(\sigma_S dz_{ST} - \sigma_X dz_{XT})
+\end{align*}
 \end{document}

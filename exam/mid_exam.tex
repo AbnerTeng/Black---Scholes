@@ -1,0 +1,360 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,scrextend}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14.5pt}
+\addtolength{\topmargin}{-2.5pt}
+\pagestyle{fancy}
+
+\newcommand{\cont}{\subseteq}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepackage[mathscr]{euscript}
+\let\euscr\mathscr\let\mathscr\relax% just so we can load this and rsfs
+\usepackage[scr]{rsfso}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{bbm}
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue,
+citecolor=blue, urlcolor=blue]{hyperref}
+
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\newcommand{\ddx}{\frac{d}{dx}}
+\newcommand{\dfdx}{\frac{df}{dx}}
+\newcommand{\ddxp}[1]{\frac{d}{dx}\left(#1 \right)}
+\newcommand{\dydx}{\frac{dy}{dx}}
+\newcommand{\pfpt}{\dfrac{\partial f_t}{\partial t}}
+\newcommand{\pfps}{\dfrac{\partial f_t}{\partial S_t}}
+\newcommand{\pffpss}{\dfrac{\partial^2 f_t}{\partial S_t^2}}
+\newcommand{\ind}{\mathbbm{1}}
+\let\ds\displaystyle
+\newcommand{\intx}[1]{\int#1 \, dx}
+\newcommand{\intt}[1]{\int#1 \, dt}
+\newcommand{\defint}[3]{\int_{#1}^{#2} #3 \, dx}
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\un}{\cup}
+\newcommand{\inter}{\cap}
+\newcommand{\ps}{\mathscr{P}}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newtheorem*{sol}{Solution}
+\newtheorem*{claim}{Claim}
+\newtheorem{problem}{Problem}
+\pgfplotsset{compat=1.17}
+\begin{document}
+ 
+% Don't change the above session
+
+\lhead{Yu-Chen Den}
+\chead{Financial Engineering Midterm}
+\rhead{\today}
+ 
+% \maketitle
+\section{Binomial Model}
+\subsection*{one-period standard Eurpoean Call option Binomial model}
+Risk Neutral probability $q$ is derived as
+\begin{align*}
+    q = \dfrac{e^{rT}- d}{u-d}
+\end{align*}
+So, the price of the option is
+\begin{align*}
+    f = e^{-rT}\Big[q\times \max(uS_0-K, 0) + (1-q)\times \max(dS_0 -K, 0)\Big]
+\end{align*}
+\subsection*{Generalized European Call option Binomial Model}
+$n$ periods, where $\Delta t = \dfrac{T}{n}$ 
+\begin{align*}
+    f_u &= e^{-r\Delta t}\Big[q\times f_{uu} + (1-q)\times f_{ud}\Big],\ f_d = e^{-r\Delta t}\Big[q\times f_{du} + (1-q)\times f_{dd}\Big]\\
+    f &= e^{-r\Delta t}\Big[q\times f_u + (1-q)\times f_d\Big] = e^{-2r\Delta t}\Big[q^2\times f_{uu} + 2q(1-q)\times f_{ud} + (1-q)^2\times f_{dd}\Big]
+\end{align*}
+So, when $n = 3$, we have
+\begin{align*}
+    f = e^{-3r\Delta t}\Big[q^3 f_{C_3^3 u^3 d^0} + 3q^2(1-q)f_{C^3_2 u^2 d^1} + 3q(1-q)^2 f_{C^3_1 u^1 d^2} + (1-q)^3 f_{C^3_0 u^0d^3}\Big]
+\end{align*}
+As we expand to $n$ periods, we will have
+\begin{align*}
+   f &= e^{-nr\Delta t}\Big[C^n_n q^n(1-q)^0 f_{C_n^n u^n d^0} + C^n_{n-1}q^{n-1}(1-q)^1f_{C_{n-1}^{n} u^{n-1} d^1} + \cdots + C^n_0 q^0(1-q)^n f_{C_0^n u^0d^n}\Big]\\
+   & = e^{-nr\Delta t}\Big[\sum_{i=0}^n C^n_i q^i(1-q)^{n-i} \max(u^id^{n-i}S_0-K, 0)\Big]\\
+   & = e^{-nr\Delta t}\Big[\sum_{i=0}^n C^n_i q^i(1-q)^{n-i} \max(u^id^{n-i}S_0-K, 0)\Big]
+\end{align*} 
+Assume that $a$ is the minimum number of upward moves that the stock must finish in-the-money.\\\\
+$\forall i < a,\ \max(u^id^{n-i}S_0-K, 0) = 0$\\\\
+$\forall i \geq a,\ \max(u^id^{n-i}S_0-K, 0) = u^id^{n-i}S_0-K$\\\\
+So, 
+\begin{align*}
+   f & = e^{-nr\Delta t}\Big[\sum_{i=a}^n C^n_i q^i(1-q)^{n-i} (u^id^{n-i}S_0-K)\Big]\\
+   & = S\Big[\sum_{i=a}^n C^n_i (que^{-r\Delta t})^i[(1-q)de^{-r\Delta t}]^{n-i}\Big]- Ke^{-nr\Delta t}\sum_{i=a}^n C^n_i q^i(1-q)^{n-i}
+\end{align*}
+Let $q' = que^{-r\Delta t}$, $(1-q)' = (1-q)de^{-r\Delta t}$
+\begin{align*}
+    f &= S\Big[\sum_{i=a}^n C^n_i q'^i[(1-q)']^{n-i}\Big]- Ke^{-nr\Delta t}\sum_{i=a}^n C^n_i q^i(1-q)^{n-i}\\
+    & = SP(X\ge a) - Ke^{-rT}P(Y\ge a)
+\end{align*}
+Where $X\sim Bin(n, q')$, $Y\sim Bin(n, q)$
+\subsection*{CRR to BS}
+According to Geometric Brownian Motion (GBM), we have\\
+\begin{align*}
+    \dfrac{S_t}{S} = r dt + \sigma dW_t \leftrightarrow \ln(\dfrac{S_T}{S}) = (r-\dfrac{\sigma^2}{2})T + \sigma W_T
+\end{align*}
+Then the mean and variance of stock return can be present as
+\begin{align*}
+    E\left[\ln(\dfrac{S_T}{S})\right] = \left(r-\dfrac{1}{2}\sigma^2\right)T\\\\
+    Var\left[\ln(\dfrac{S_T}{S})\right] = \sigma^2 T
+\end{align*}
+Based on CRR, $S_T = Su^I d^{N-I}\Rightarrow \ln(\dfrac{S_T}{S}) = \ln(\dfrac{Su^I d^{N-I}}{S}) = N\ln d + I\ln(\dfrac{u}{d})$, Let $I = Nq$
+\begin{align*}
+    E\left[\ln\left(\dfrac{S_T}{S}\right)\right] = N\ln d + Nq\ln(\dfrac{u}{d}) \equiv \hat{\mu}N\\\\
+    Var\left[\ln\left(\dfrac{S_T}{S}\right)\right] = Nq(1-q)\ln^2(\dfrac{u}{d}) \equiv \hat{\sigma}^2N
+\end{align*}
+To converge the pricing formula, it must satisfy the following properties
+\begin{enumerate}
+    \item[(i)] $\hat{\mu}N \to \left(r-\dfrac{1}{2}\sigma^2\right)T$ as $n\to\infty$\\
+    \item[(ii)] $\hat{\sigma}^2N \to \sigma^2 T$ as $n\to\infty$\\
+\end{enumerate}
+Furthermore, we set $u = e^{\sigma\sqrt{\Delta t}},\ \ d = e^{-\sigma\sqrt{\Delta t}}$. According to above, we devide the model into 2 parts, $P(X\ge a)$ and $P(Y \ge a)$\\
+\begin{align*}
+    1-P(Y\ge a) = P(Y\leq a) = P(\dfrac{Y-Nq}{\sqrt{Nq(1-q)}}\leq \dfrac{(a-1)-Nq}{\sqrt{Nq(1-q)}})\\
+\end{align*}
+Because $u^a d^{N-a}S-K> 0$, so $a> \ln(\dfrac{K}{Sd^N})/\ln(\dfrac{u}{d})$. And there exists a $\varepsilon\in [0,1]$, such that $a-1 = \ln(\dfrac{K}{Sd^N})/\ln(\dfrac{u}{d})-\varepsilon$. Furthermore, from above, we know that
+\begin{align*}
+    \ln d = \hat{\mu} - q\ln(\dfrac{u}{d})\\
+    \ln(\dfrac{u}{d}) = \dfrac{\hat{\sigma}}{\sqrt{q(1-q)}}\\
+\end{align*}
+So we can replace $a-1$ by them and denote as
+\begin{align*}
+    \dfrac{(a-1)-Nq}{\sqrt{Nq(1-q)}} & = \dfrac{(\ln(\dfrac{K}{Sd^N})/\ln(\dfrac{u}{d})-\varepsilon)-Nq}{\sqrt{Nq(1-q)}}\\
+    & = \dfrac{\ln(\dfrac{K}{Sd^N})/\ln(\dfrac{u}{d})}{\sqrt{Nq(1-q)}} - \dfrac{\varepsilon+Nq}{\sqrt{Nq(1-q)}}\\
+\end{align*}
+From above, we can know that $\dfrac{1}{\hat{\sigma}} = \dfrac{\sqrt{q(1-q)}}{\ln(\dfrac{u}{d})}$
+\begin{align*}
+    \dfrac{(a-1)-Nq}{\sqrt{Nq(1-q)}} & = \dfrac{\ln(\dfrac{K}{S})-N\ln d}{\sqrt{N}\hat{\sigma}} - \dfrac{\varepsilon+Nq}{\sqrt{Nq(1-q)}} = \dfrac{\ln(\dfrac{K}{S})-N(\hat{\mu} - q\ln(\dfrac{u}{d}))}{\sqrt{N}\hat{\sigma}} - \dfrac{\varepsilon+Nq}{\sqrt{Nq(1-q)}}\\
+    & = \dfrac{\ln(\dfrac{K}{S})-N(\hat{\mu} - q\ln(\dfrac{u}{d}))}{\sqrt{N}\hat{\sigma}} - \dfrac{\ln(\dfrac{u}{d})(\varepsilon+Nq)}{\sqrt{N}\hat\sigma}\\
+    & = \dfrac{\ln(\dfrac{K}{S})-N\hat{\mu}-\ln(\dfrac{u}{d}\varepsilon)}{\sqrt{N}\hat{\sigma}}\\
+\end{align*}
+Follow the below properties
+\begin{enumerate}
+    \item[(i)] $\hat{\mu}N \to (r-\dfrac{1}{2}\sigma^2)T$ as $N\to\infty$
+    \item[(ii)] $\hat{\sigma^2}N\to\sigma^2 T$ as $N\to\infty$
+    \item[(iii)] $\ln(\dfrac{u}{d}) = \ln(\dfrac{e^{\sigma\sqrt{\Delta t}}}{e^{-\sigma\sqrt{\Delta t}}}) = 2\sigma\sqrt{\Delta t}\to 0$ as $N\to\infty$\\   
+\end{enumerate}
+Adopt the Central Limit Theorem (CLT)
+\begin{align*}
+    1-P(Y\ge a) = P(\dfrac{Y-Nq}{\sqrt{Nq(1-q)}}\leq \dfrac{(a-1)-Nq}{\sqrt{Nq(1-q)}}) \to P(Z \leq \dfrac{\ln(K/S) - (r-\dfrac{1}{2}\sigma^2)T}{\sigma\sqrt{T}})
+\end{align*}
+So
+\begin{align*}
+    P(Y\ge a) \to P(Z \leq \dfrac{\ln(S/K) + (r-\dfrac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}) = N(d_2)
+\end{align*}
+We use the same method on $P(X\ge a) \to N(d_1)$
+\section{Stochastic Process and It\^{o}'s Lemma}
+\subsection*{It\^{o} Process}
+\begin{align*}
+    df_t &= \Big(\pfpt + \dfrac{\partial f_t}{\partial X_{1,t}}\mu_1 X_{1,t} + \dfrac{\partial f_t}{\partial X_{2,t}}\mu_2 X_{2,t} + \dfrac{1}{2} \dfrac{\partial^2 f_t}{\partial X^2_{1,t}}\sigma^2_1 X^2_{1,t} + \dfrac{1}{2} \dfrac{\partial^2 f_t}{\partial X^2_{2,t}}\sigma^2_2 X^2_{2,t}\\
+    &\ \ \ \ + \dfrac{\partial^2 f_t}{\partial X_{1,t}\partial X_{2,t}} \sigma_1\sigma_2 X_{1,t}X_{2,t}\rho_{12}\Big)dt + \dfrac{\partial f_t}{\partial X_{1,t}}\sigma_1 X_{1,t}dW_{1,t} + \dfrac{\partial f_t}{\partial X_{2,t}}\sigma_2 X_{2,t}dW_{2,t}
+\end{align*}
+\subsection*{Derive It\^{o}'s Lemma}
+$f_t = \dfrac{X_{1,t}}{X_{2,t}}$, $\ \ $$dX_{1,t} = \mu_1 X_{1,t} + \sigma X_{1,t}dW_{1,t}$,$\ \ $$dX_{2,t} = \mu_2 X_{2,t} + \sigma X_{2,t}dW_{2,t}$\\\\
+We can first write down\\\\
+$\pfpt = 0,\ \ \dfrac{\partial f_t}{\partial X_{1,t}} = \dfrac{1}{X_{2,t}},\ \ \dfrac{\partial f_t}{\partial X_{2,t}} = -\dfrac{X_{1,t}}{X^2_{2,t}},\ \ \dfrac{\partial^2 f_t}{\partial X^2_{1,t}} = 0,\ \ \dfrac{\partial^2 f_t}{\partial X^2_{2,t}} = \dfrac{2X_{1,t}}{X^3_{2,t}},\ \ \dfrac{\partial^2 f_t}{\partial X_{1,t}\partial X_{2,t}} = -\dfrac{1}{X^2_{2,t}}$\\\\
+So
+\begin{align*}
+    df_t &= \Big(\dfrac{1}{X_{2,t}}\mu_1 X_{1,t} -\dfrac{X_{1,t}}{X^2_{2,t}}\mu_2 X_{2,t} + \dfrac{1}{2}\dfrac{2X_{1,t}}{X^3_{2,t}}\sigma_2^2X^2_{2,t} -\dfrac{1}{X^2_{2,t}}\sigma_1\sigma_2 X_{1,t}X_{2,t}\rho_{12}\Big)dt\\
+    &\ \ \ \ + \dfrac{1}{X_{2,t}}\sigma_1 X_{1,t}dW_{1,t} -\dfrac{X_{1,t}}{X^2_{2,t}}\sigma_2 X_{2,t}dW_{2,t}\\
+    & = \dfrac{X_{1,t}}{X_{2,t}}\Big[\Big(\mu_1 + \mu_2 + \sigma^2_2 - \sigma_1 \sigma_2 \rho_{12}\Big)dt + \sigma_1 dW_{1,t} - \sigma_2 dW_{2,t}\Big]
+\end{align*}
+Then
+\begin{align*}
+    \dfrac{df_t}{f_t} = \Big(\mu_1 + \mu_2 + \sigma^2_2 - \sigma_1 \sigma_2 \rho_{12}\Big)dt + \sigma_1 dW_{1,t} - \sigma_2 dW_{2,t}
+\end{align*}
+\newpage
+\section{Black-Scholes Model and Merton Pricing Formula}
+\subsection*{Assumptions of Black-Scholes Model}
+\begin{enumerate}
+    \item Stock Price follows It\^{o} process $dS_t = \mu S_tdt + \sigma S_tdW_t$, under this assumption, we can derive that the stock price follows logarithmic normal distribution, and both $\mu$, $\sigma$ are constant.
+    \item Market is frictioness. There are no transcation costs, no tax, no liquidity limitation, and no law restrictions.
+    \item Stock trading in the market is continuous.
+    \item We can short stocks without any restriction.
+    \item No underlying dividend.
+    \item Options are European.
+    \item risk free rate $r$ exists. 
+\end{enumerate}
+\subsection*{Black-Scholes PDE}
+Assume the stock change process is $dS_t = \mu S_tdt + \sigma S_tdW_t$\\\\
+Let $f_t$ be the price of a European call option\\\\
+Then
+\begin{align*}
+    df_t = (\pfpt + \pfps \mu S_t + \dfrac{1}{2}\pffpss \sigma^2 S_t^2)dt + \pfps \sigma S_tdW_t
+\end{align*}
+Now, construct a risk-free investment portfolio $\pi_t$, where $\pi_t = -f_t + \pfps S_t$, So $d\pi_t = -df_t + \pfps dS_t$
+\begin{align*}
+    d\pi_t &= -(\pfpt + \pfps \mu S_t + \dfrac{1}{2}\pffpss \sigma^2 S_t^2)dt - \pfps \sigma S_tdW_t + \pfps dS_t\\
+    &= -(\pfpt + \pfps \mu S_t + \dfrac{1}{2}\pffpss \sigma^2 S_t^2)dt - \pfps \sigma S_tdW_t + \pfps (\mu S_tdt + \sigma S_tdW_t)\\
+    &= -(\pfpt + \dfrac{1}{2}\pffpss \sigma^2 S_t^2)dt = r\pi_tdt = r(-f_t + \pfps S_t)dt
+\end{align*}
+Both devided by $dt$
+\begin{align*}
+    -(\pfpt + \dfrac{1}{2}\pffpss \sigma^2 S_t^2) = r(-f_t + \pfps S_t)
+\end{align*}
+\begin{align*}
+    rf_t = \pfpt + \dfrac{1}{2}\pffpss \sigma^2 S_t^2 + r\pfps S_t
+\end{align*}
+\subsection*{Feynman-Kac Thoerem}
+According to the above, we know that $rf_t = \pfpt + \dfrac{1}{2}\pffpss \sigma^2 S_t^2 + r\pfps S_t$\\\\
+Let $f_T = \max(S_T - K, 0) = (S_T-K)\ind_{S_T>K}\leftrightarrow f_t = E_Q[e^{-r(T-t)}f_T|\mathcal{F}_t]$\\
+\begin{align*}
+    f_t &= e^{-r(T-t)}E_Q[f_T|\mathcal{F}_t] = e^{-r(T-t)}E_Q[(S_T-K)\ind_{S_T>K}|\mathcal{F}_t]\\\\
+    &= e^{-r(T-t)}E_Q[S_T\ind_{S_T>K}] - Ke^{-r(T-t)}E_Q[\ind_{S_T>K}|\mathcal{F}_t]
+\end{align*}\\
+Assume we set $E_1 = e^{-r(T-t)}E_Q[S_T\ind_{S_T>K}]$ and $E_2 = Ke^{-r(T-t)}E_Q[\ind_{S_T>K}|\mathcal{F}_t]$\\\\
+And we know $S_T = S_t \exp[(r-\frac{1}{2}\sigma^2)(T-t)+\sigma\Delta W_{T-t}]$, $\Delta W_{T-t} = W_T - W_t \sim N(0, T-t)$\\\\
+Thus, $S_T\sim \log N(\ln S_t + (r-\frac{1}{2}\sigma^2)(T-t), \sigma^2(T-t))$, Let $\ln S_t + (r-\frac{1}{2}\sigma^2)(T-t) = a$\\\\
+, and $\sigma^2(T-t) = b^2$\\\\
+Last, let $S_T = Y = e^x$. That is, $Y = e^x \sim \log N(a, b^2)$, $x = \log Y \sim N(a, b^2)$
+\begin{align*}
+    E_Q[e^x\ind_{x>\ln K}|\mathcal{F}_t] &= \int_{\ln K}^{\infty} e^xf(x)dx = \int_{\ln K}^{\infty} e^x \dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{(x-a)^2}{2b^2})dx\\
+    &= \int_{\ln K}^{\infty} e^x \dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{1}{2b^2}(x^2 - 2ax + a^2))dx\\
+    & = \int_{\ln K}^{\infty}\dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{1}{2b^2}(x^2 -2(a+b^2)x + a^2))dx\\
+    & = \int_{\ln K}^{\infty}\dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{1}{2b^2}(x-(a+b^2)^2)dx\times \exp[\dfrac{1}{2b^2}(2ab^2 + b^4)]
+\end{align*}
+Because $\dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{1}{2b^2}(x-(a+b^2)^2)$ means that $x\sim N(a+b^2, b^2)$\\
+\begin{align*}
+    E_Q[e^x\ind_{x>\ln K}|\mathcal{F}_t] & = p(x>\ln K)\times \exp[a+\dfrac{1}{2b^2}] = P(\dfrac{x-(a+b^2)}{b} > \dfrac{\ln K-(a+b^2)}{b})\times \exp[a+\dfrac{1}{2}b^2]\\
+    & = P(Z > \dfrac{\ln K-(a+b^2)}{b})\times \exp[a+\dfrac{1}{2}b^2] = P(Z < \dfrac{(a+b^2)-\ln K}{b})\times \exp[a+\dfrac{1}{2}b^2]\\
+    & = \Phi \left(\dfrac{(a+b^2)-\ln K}{b}\right)\times \exp[a+\dfrac{1}{2}b^2]
+\end{align*}
+We know that $a = \ln S_t + (r-\dfrac{1}{2}\sigma^2) (T-t)$, and $b^2 = \sigma^2 (T-t)$
+\begin{align*}
+    \Phi \left(\dfrac{(a+b^2)-\ln K}{b}\right) & = \Phi \left(\dfrac{\ln S_t + (r-\dfrac{1}{2}\sigma^2) (T-t) + \sigma^2 (T-t) - \ln K}{\sigma\sqrt{T-t}}\right)\\
+    & = \Phi \left(\dfrac{\ln \dfrac{S_t}{K_t} +\dfrac{1}{2}\sigma^2(T-t)}{\sigma\sqrt{T-t}}\right) = N(d_1)
+\end{align*}
+\begin{align*}
+    \exp [a+\dfrac{1}{2}b^2] = \exp [\ln S_t + (r-\dfrac{1}{2}\sigma^2)(T-t) + \dfrac{1}{2}\sigma^2(T-t)] = S_te^{r(T-t)}
+\end{align*}
+So,
+\begin{align*}
+    e^{-r(T-t)}E_Q[S_T\ind_{S_T>K}] = S_tN(d_1)
+\end{align*}
+$E_2$ has the same way to get it.\\
+\begin{align*}
+    E_Q[\ind{x>\ln K}|\mathcal{F}_t] = \int_{\ln K}^{\infty}\dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{(x-a)^2}{2b^2})dx
+\end{align*}
+We know that $\dfrac{1}{\sqrt{2\pi b^2}}\exp(-\dfrac{(x-a)^2}{2b^2})$ means that $x\sim N(a, b^2)$\\
+\begin{align*}
+    E_Q[\ind{x>\ln K}|\mathcal{F}_t] &= P(x>\ln K) = P(\dfrac{x-a}{b} > \dfrac{\ln K - a}{b}) = P(Z > \dfrac{\ln K - a}{b}) = P(Z < \dfrac{a - \ln K}{b})\\
+    & = \Phi \left(\dfrac{a - \ln K}{b}\right) = \Phi \left(\dfrac{\ln S_t + (r-\dfrac{1}{2}\sigma^2) (T-t) - \ln K}{\sigma\sqrt{T-t}}\right) = N(d_2)
+\end{align*}
+\begin{align*}
+    E_2 = Ke^{-r(T-t)}E_Q[\ind{x>\ln K}|\mathcal{F}_t] = Ke^{-r(T-t)}N(d_2)
+\end{align*}
+\subsection*{Hedge parameters for Delta}
+Delta is the hedge ratio of the option. $\delta = \dfrac{\partial C}{\partial S}$
+\begin{align*}
+    C_T = S N(d_1) - Ke^{-rT}N(d_2) 
+\end{align*}
+\begin{align*}
+    \dfrac{\partial C}{\partial S} & = N(d_1) + S\dfrac{\partial N(d_1)}{\partial d_1}\dfrac{\partial d_1}{\partial S} - Ke^{-rT}\dfrac{\partial N(d_2)}{\partial d_2}\dfrac{\partial d_2}{\partial S}\\
+    & = N(d_1) + S\dfrac{1}{\sqrt{2\pi}}\exp(-\dfrac{d_1^2}{2})\dfrac{\partial d_1}{\partial S} - Ke^{-rT}\dfrac{1}{\sqrt{2\pi}}\exp(-\dfrac{d_2^2}{2})\dfrac{\partial d_2}{\partial S}
+\end{align*}
+Because $d_2 = d_1 - \sigma\sqrt{T}$, and $\dfrac{\partial d_1}{\partial S} = \dfrac{\partial d_2}{\partial S}$
+\begin{align*}
+    \dfrac{\partial C}{\partial S} & = N(d_1) + S\dfrac{1}{\sqrt{2\pi}}\exp(-\dfrac{d_1^2}{2})\dfrac{\partial d_1}{\partial S} - Ke^{-rT}\dfrac{1}{\sqrt{2\pi}}\exp(-\dfrac{(d_1^2 - 2d_1 \sigma\sqrt{T} + \sigma^2 T)}{2})\dfrac{\partial d_1}{\partial S}\\
+\end{align*}
+As $d_1\sigma\sqrt{T} = \ln(\dfrac{S}{K})+(r+\dfrac{1}{2}\sigma^2)T$
+\begin{align*}
+    S\exp(-\dfrac{1}{2}d_1^2) &= Ke^{-rT}\exp(-\dfrac{1}{2}d_1^2 + \ln(\dfrac{S}{K})+(r+\dfrac{1}{2}\sigma^2)T - \dfrac{1}{2}\sigma^2T)\\
+    & = Ke^{-rT}\exp(-\dfrac{1}{2}d_1^2 + \ln(\dfrac{S}{K}) + rT) = S\exp(-\dfrac{1}{2}d_1^2)
+\end{align*}
+So, at last
+\begin{align*}
+    \dfrac{\partial C}{\partial S} = N(d_1)
+\end{align*}
+\subsection*{Derive Merton's pricing PDE}
+Same as 3-1, we first construct the risk-free investment portfolio $\pi_t = -f_t + \dfrac{\partial f_t}{\partial S_t}S_t$\\
+In minimum time $dt$, change of the portfolio is
+\begin{align*}
+    d\pi_t & = -df_t + \dfrac{\partial f_t}{\partial S_t}(dS_t + qS_t dt)\\
+    & = -\left(\pfpt + \pfps \mu S_t + \dfrac{1}{2}\pffpss \sigma^2 S_t^2\right)dt - \pfps \sigma S_tdW_t + \pfps (\mu S_t dt + \sigma S_t dW_t + qS_t dt)\\
+    & = -\left(\pfpt + \dfrac{1}{2}\pffpss \sigma^2 S_t^2 - \pfps qS_t\right)dt = r\pi_t dt = r\left(-f_t + \dfrac{\partial f_t}{\partial S_t}S_t\right)dt
+\end{align*}
+So
+\begin{align*}
+    rf_t = \pfpt + \dfrac{1}{2}\pffpss \sigma^2 S_t^2 + \pfps (r-q)S_t
+\end{align*}
+\subsection*{Merton's pricing formula}
+\begin{align*}
+    C_t = Se^{-q(T-t)}N(d_1) - Ke^{-r(T-t)}N(d_2)
+\end{align*}
+Where $q$ is the dividend yield.\\
+\section{Heat Equation}
+\subsection*{Derive Black-Scholes PDE}
+Solution of Heat Equation
+\begin{align*}
+    U(x,t) = \int_{-\infty}^{\infty} \dfrac{1}{\sqrt{4\pi c^2 t}}e^{-\dfrac{(x-y)^2}{4c^2t}}g(y)dy
+\end{align*}
+Where $U_t(x,t) = c^2 U_xx(x,t)$ subject to $U(x,0) = g(x)$
+\begin{align*}
+    V_{\tau}(x,\tau) = \int_{-\infty}^{\infty} \dfrac{1}{\sqrt{4\pi c^2 \tau}}e^{-\dfrac{(y-x)^2}{4c^2\tau}}K(e^y-1)^{+}dy
+\end{align*}
+Because $c^2 = \dfrac{1}{2}\sigma^2$
+\begin{align*}
+    V_{\tau}(x,\tau) & = K\int_{-\infty}^{\infty} \dfrac{1}{\sqrt{2\pi \sigma^2 \tau}}e^{-\dfrac{(y-x)^2}{2\sigma^2\tau}}(e^y-1)^{+}dy\\
+    & = K\int_{0}^{\infty} \dfrac{1}{\sqrt{2\pi \sigma^2 \tau}}e^{-\dfrac{(y-x)^2}{2\sigma^2\tau}}(e^y-1)dy,\ y>0\leftrightarrow e^y>1\\
+    & = K\left[\int_{0}^{\infty} \dfrac{1}{\sqrt{2\pi \sigma^2 \tau}}e^{-\dfrac{(y-x)^2}{2\sigma^2\tau}}e^y dy - \int_{0}^{\infty} \dfrac{1}{\sqrt{2\pi \sigma^2 \tau}}e^{-\dfrac{(y-x)^2}{2\sigma^2\tau}} dy\right]
+\end{align*} 
+Let $z = \dfrac{y-x}{\sigma\sqrt{\tau}}$, $y = \sigma\sqrt{\tau}\cdot z + x$, $dz = \dfrac{dy}{\sigma\sqrt{\tau}}$, $z^* = -\dfrac{x}{\sigma\sqrt{\tau}}=-d_2$
+\begin{align*}
+    V_{\tau}(x,\tau) & = K\left[\int_{-d2}^{\infty} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}e^{\sigma\sqrt{\tau}\cdot z+x} dz - \int_{-d2}^{\infty} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}} dz\right]\\
+    & = K\left[\int_{-d2}^{\infty} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{(z-\sigma\sqrt{\tau})^2}{2}}e^{\frac{\sigma^2}{2}\tau+x} dz - \int_{-d2}^{\infty} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}} dz\right]\\
+    & = Ke^{\frac{\sigma^2}{2}\tau+x}\int_{-d2}^{\infty} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{(z-\sigma\sqrt{\tau})^2}{2}} dz - K\int_{-\infty}^{d2} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}} dz
+\end{align*}
+Let $z_1 = z - \sigma\sqrt{\tau}$, the lower bound of $z_1 = -d_1 = -d_2 - \sigma\sqrt{\tau}$
+\begin{align*}
+    V_{\tau}(x,\tau) & = Ke^{\frac{\sigma^2}{2}\tau+x}\int_{-d2-\sigma\sqrt{\tau}}^{\infty} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{z_1^2}{2}} dz_1 - KN(d_2)\\
+    & = Ke^{\frac{\sigma^2}{2}\tau+x}\int_{-\infty}^{d_1} \dfrac{1}{\sqrt{2\pi}}e^{-\frac{z_1^2}{2}} dz_1 - KN(d_2)\\
+    & = Ke^{\frac{\sigma^2}{2}\tau+x}N(d_1) - KN(d_2),\ x = \ln\dfrac{S}{K} + (r-\dfrac{1}{2}\sigma^2)\tau\\
+    & = Se^{r\tau}N(d_1) - KN(d_2)
+\end{align*}
+Last
+\begin{align*}
+    C(S_t, t) = e^{-r\tau}V(x,\tau) = SN(d_1) - Ke^{-r\tau}N(d_2)
+\end{align*}
+\section{Martingale Pricing Formula}
+\subsection*{Describe the Fundamental Theorem of Arbitrage-Free}
+Under the Arbitrage free condition, T exists an only risk neutral measurement $Q$ which let the relative price of asset follows Martingale.\\\\
+That is,\\
+\[\dfrac{H_t}{\beta_t} = E_Q\Bigg[\dfrac{H_T}{\beta_T}\Bigg|\mathcal{F}_t\Bigg]\]
+\subsection*{Describe the Girsanov's Theorem}
+If $E(e^{\int_0^t \beta_t dt})<\infty$. Let $P$ to $Q's$ Radon-Nikodym derivative $\xi_t = \dfrac{dP}{dQ}|\mathcal{F}_t = \exp\{\int_t^T X_s dW_s - \dfrac{1}{2}\int_t^T X_s^2 ds\}$ 
+\subsection*{Derive Black-Scholes pricing formula by Martingale Pricing Method}
+First, transfer dynamic stock price process of $P$ measure to $Q$ measure.\\
+\begin{align*}
+    \dfrac{dS_t}{S_t} = \mu dt + \sigma dW_t^P \to \dfrac{dS_t}{S_t} = r dt + \sigma dW_t^Q
+\end{align*}
+Second, We let the relative price of MMA follows Martingale under $Q$ measure.\\
+\begin{align*}
+    \dfrac{C_t}{\beta_t} = E\left[\dfrac{C_T}{\beta_T}|\mathcal{F}_t\right]
+\end{align*}
+We assume interest rate is constant
+\begin{align*}
+    C_t & = \dfrac{\beta_t}{\beta_T}E[C_T|\mathcal{F}_t]\\
+    & = e^{-r(T-t)}E[C_T|\mathcal{F}_t]\\
+    & = e^{-r(T-t)}E^Q(S_T\ind_{S_T>K}|\mathcal{F}_t) - Ke^{-r(T-t)}E^Q(\ind_{S_T>K}|\mathcal{F}_t)
+\end{align*}
+Expand the close form of Stock Price
+\begin{align*}
+    E^Q(S_T\ind_{S_T>K}|\mathcal{F}_t) & = E^Q(S_te^{(r - \frac{1}{2}\sigma^2)(T-t) + \sigma(W_T^Q - W_t^Q)}\ind_{S_T>K}|\mathcal{F}_t)\\
+    & = S_te^{r(T-t)}E^Q(e^{(\frac{1}{2}\sigma^2)(T-t) + \sigma(W_T^Q - W_t^Q)}\ind_{S_T>K}|\mathcal{F}_t)\\
+\end{align*}
+Under Girsanov theorem
+\begin{align*}
+    \dfrac{dQ}{dP}|\mathcal{F}_t = \exp\left\{\int_t^T \sigma dW_s - \dfrac{1}{2}\int_t^T \sigma^2 ds\right\}
+\end{align*}
+So, we can derive the close form of stock price as
+\begin{align*}
+    E^Q(e^{(\frac{1}{2}\sigma^2)(T-t) + \sigma(W_T^Q - W_t^Q)}\ind_{S_T>K}|\mathcal{F}_t) & = E^Q(\dfrac{dP}{dQ}\cdot\ind_{S_T>K}|\mathcal{F}_t)\\
+    & = E^P(\ind_{S_T>K}|\mathcal{F}_t)\\
+    & = P^P(S_T>K|\mathcal{F}_t)\\
+\end{align*}
+\end{document}
